@@ -16,6 +16,9 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTP;
@@ -28,9 +31,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 
 public class MainActivity extends AppCompatActivity {
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+
     private int VIDEO_REQUEST_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
         Log.d("erkan", "erkan");
         setContentView(R.layout.activity_main);
+        progressBar = findViewById(R.id.progressBar1);
+
+
+
         Log.d("Environment", Environment.getExternalStorageDirectory().toString());
         File dir = getExternalFilesDir(null);
         Log.d(" dir.getAbsolutePath()",  dir.getAbsolutePath());
@@ -104,12 +113,13 @@ public class MainActivity extends AppCompatActivity {
                 //this method will be called everytime some bytes are transferred
 
                 int percent = (int)(totalBytesTransferred*100/getFilePath().length());
-                Log.d("total percent is: "+percent+"%","total percent is: "+percent+"%");
+                Log.d("total percent is: "+percent+"%","total percent is: " + percent +"%");
                 // update your progress bar with this percentage
+                progressBar.setProgress(percent);
             }
 
         };
-        streamListener.
+
         try {
             File direc = getExternalFilesDir(null);
             String absoPath = direc.getAbsolutePath();
