@@ -23,4 +23,11 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="Capture Video" />
 
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
 </android.support.constraint.ConstraintLayout>
