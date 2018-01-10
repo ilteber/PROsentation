@@ -153,11 +153,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    long getFileSize(FTPClient client) {
+        long size = 0;
+        try {
+            FTPFile file = client.mlistFile("/sample_video.mp4");
+            size = file.getSize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
+
+    long size = getFilePath().length();
+
     void FTPDownload(String URL, int PORT, String Filename){
 
         FileOutputStream fileOutputStream = null;
+
         try {
-            fileOutputStream = new FileOutputStream(Environment.getExternalStorageDirectory().toString()+"/video_app/video_downloaded.mp4");
+            File direc = getExternalFilesDir(null);
+            String absoPath = direc.getAbsolutePath();
+            fileOutputStream = new FileOutputStream(absoPath +"/video_downloaded.mp4");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -166,20 +182,43 @@ public class MainActivity extends AppCompatActivity {
 
         FTPClient client = new FTPClient();
         try {
+            FTPFile file = client.mlistFile("/sample_video.mp4");
+            size = file.getSize();
+            Log.d("File Size from server", "File size : " + size);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        CopyStreamAdapter streamListener = new CopyStreamAdapter() {
+
+            @Override
+            public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize) {
+                //this method will be called everytime some bytes are transferred
+
+                int percent = (int)(totalBytesTransferred*100/size);
+                Log.d("total percent is: "+percent+"%","total percent is: " + percent +"%");
+                // update your progress bar with this percentage
+                progressBar.setProgress(percent);
+            }
+
+        };
+
+        client.setCopyStreamListener(streamListener);
+        try {
             client.connect(URL, PORT);
-            //client.enterLocalPassiveMode();
+            client.enterLocalPassiveMode();
             client.login("erkan", "12345");
             Log.d("Connected to download", "Connected. Reply: " + client.getReplyString());
             client.enterLocalPassiveMode();
-            client.setFileType(FTP.BINARY_FILE_TYPE, FTP.BINARY_FILE_TYPE);
+            client.setFileType(FTP.BINARY_FILE_TYPE);
             Log.d("Uploading", "Uploading");
-            client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
-            FTPFile[] files = client.listFiles("/");
-            Log.d("Files length:", Integer.toString(files.length));
-            for (FTPFile file : files) {
-                Log.d("Filename:", file.getName());
-            }
-            Log.d("No Files:", "No Files");
+//            client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
+//            FTPFile[] files = client.listFiles("/");
+//            Log.d("Files length:", Integer.toString(files.length));
+//            for (FTPFile file : files) {
+//                Log.d("Filename:", file.getName());
+//            }
+//            Log.d("No Files:", "No Files");
             //
             boolean success = client.retrieveFile("/sample_video.mp4", fileOutputStream);
             Log.d("here", "false return from ftp.retrieveFile() - code " + client.getReplyCode());
@@ -202,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
 
             // create a buffer of maximum size
             //AWS IP: 172.31.46.154/ec2-13-59-72-180.us-east-2.compute.amazonaws.com/13.58.144.50
-            FTPUpload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "sample_video.mp4");
-            //FTPDownload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "video_downloaded.mp4");
+//            FTPUpload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "sample_video.mp4");
+            FTPDownload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "video_downloaded.mp4");
             return null;
         }
     }
