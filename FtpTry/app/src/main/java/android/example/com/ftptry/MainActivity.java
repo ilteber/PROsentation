@@ -153,18 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    long getFileSize(FTPClient client) {
-        long size = 0;
-        try {
-            FTPFile file = client.mlistFile("/sample_video.mp4");
-            size = file.getSize();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return size;
-    }
-
-    long size = getFilePath().length();
+//    long size = getFilePath().length();
 
     void FTPDownload(String URL, int PORT, String Filename){
 
@@ -174,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
             File direc = getExternalFilesDir(null);
             String absoPath = direc.getAbsolutePath();
             fileOutputStream = new FileOutputStream(absoPath +"/video_downloaded.mp4");
+            Log.d("Abso Path: ", absoPath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -181,13 +171,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FTPClient client = new FTPClient();
-        try {
-            FTPFile file = client.mlistFile("/sample_video.mp4");
-            size = file.getSize();
-            Log.d("File Size from server", "File size : " + size);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FTPFile file = client.mlistFile("/sample_video.mp4");
+//            size = file.getSize();
+//            Log.d("File Size from server", "File size : " + size);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         CopyStreamAdapter streamListener = new CopyStreamAdapter() {
 
@@ -195,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
             public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize) {
                 //this method will be called everytime some bytes are transferred
 
-                int percent = (int)(totalBytesTransferred*100/size);
+                int percent = (int)(totalBytesTransferred*100/getFilePath().length());
                 Log.d("total percent is: "+percent+"%","total percent is: " + percent +"%");
                 // update your progress bar with this percentage
                 progressBar.setProgress(percent);
@@ -211,18 +201,18 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Connected to download", "Connected. Reply: " + client.getReplyString());
             client.enterLocalPassiveMode();
             client.setFileType(FTP.BINARY_FILE_TYPE);
-            Log.d("Uploading", "Uploading");
-//            client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
-//            FTPFile[] files = client.listFiles("/");
-//            Log.d("Files length:", Integer.toString(files.length));
-//            for (FTPFile file : files) {
-//                Log.d("Filename:", file.getName());
-//            }
-//            Log.d("No Files:", "No Files");
-            //
+            Log.d("Downloading", "Downloading");
+            client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
+            FTPFile[] files = client.listFiles("/");
+            Log.d("Files length:", Integer.toString(files.length));
+            for (FTPFile file : files) {
+                Log.d("Filename:", file.getName());
+            }
+
             boolean success = client.retrieveFile("/sample_video.mp4", fileOutputStream);
-            Log.d("here", "false return from ftp.retrieveFile() - code " + client.getReplyCode());
+            //Log.d("here", "false return from ftp.retrieveFile() - code " + client.getReplyCode());
             fileOutputStream.close();
+            client.disconnect();
             if (success)
                 Log.d("Download","File #1 has been downloaded successfully.");
             else
