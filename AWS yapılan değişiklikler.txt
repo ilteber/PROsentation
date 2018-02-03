@@ -1,0 +1,11 @@
+*****AWS Üzerinde Yapýlan Deðiþikliklerin Not Alýnmasý Ýçin*****
+
+-create IAM user
+
+-port forwarding for ftp server
+
+-create security group
+
+-create security policy (administrator access)
+
+-installing awscli
