@@ -1,10 +1,12 @@
 package android.example.com.ftptry;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.example.com.ftptry.R;
-import android.graphics.Bitmap;
+import android.net.MailTo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -12,13 +14,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTP;
@@ -31,8 +32,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+    private DynamoDBManagerClass managerClass = new DynamoDBManagerClass();
+    private final String username = "erkan";
+    private int newId = -1;
+
     private ProgressBar progressBar;
     private int progressStatus = 0;
 
@@ -40,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         Log.d("erkan", "erkan");
@@ -47,14 +56,232 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar1);
 
 
-
         Log.d("Environment", Environment.getExternalStorageDirectory().toString());
         File dir = getExternalFilesDir(null);
         Log.d(" dir.getAbsolutePath()",  dir.getAbsolutePath());
         /////////////////////
-//        String a = "hey";
-//        BackgroundTask b = new BackgroundTask();
-//        b.execute(a);
+
+        /////////////////////
+        //doSomething();
+
+        //setNewVideoId();
+
+        new showProcessStatus().execute(3);
+
+        //new UpdateTable().execute();
+        //new showProcessStatus().execute();
+        //Log.d("I am here", "I am here");
+        //displayNotification();
+    }
+
+    public void showProgressSpin(ProgressDialog dialog){
+        dialog = new ProgressDialog(this); // this = YourActivity
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    public void doSomething(){
+        //Progress spinner bar
+        ProgressDialog dialog = new ProgressDialog(this);
+        showProgressSpin(dialog);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //managerClass.deleteEntryInDB(MainActivity.this, 1, 0, 100, "presentation.mp4", 98, "mesut");
+            }});
+
+        t.start(); // spawn thread
+
+        try {
+            t.join();  // wait for thread to finish
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //dismiss the dialog
+        dialog.dismiss();
+    }
+
+    public void deleteSomething(){
+        //Progress spinner bar
+        ProgressDialog dialog = new ProgressDialog(this);
+        showProgressSpin(dialog);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                managerClass.deleteEntryInDB(MainActivity.this, 1, 1);
+            }});
+
+        t.start();
+
+        try {
+            t.join();  // wait for thread to finish
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //dismiss the dialog
+        dialog.dismiss();
+    }
+
+    /*public void displayNotification(){
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        final int notify_id = 1;
+        final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        builder.setSmallIcon(R.drawable.notification_icon);
+        builder.setOngoing(true);
+        builder.setContentTitle("Processing Status");
+        builder.setContentText("Processing in progress...");
+
+
+        //new Thread(new Runnable() {
+        //    @Override
+        //    public void run() {
+            int icr;
+                for(icr = 0; icr <= 100; icr+=20){
+                    builder.setProgress(100, icr, false);
+                    notificationManager.notify(notify_id, builder.build());
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                builder.setOngoing(false);
+                builder.setProgress(0, 0, false);
+                builder.setContentText("Processing Complete");
+                notificationManager.notify(notify_id, builder.build());
+        //    }
+        //}).start();
+
+
+    }*/
+
+    class showProcessStatus extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+            Log.d("DB operations", "DB operations");
+
+            /*Intent emptyIntent = new Intent(MainActivity.this, MainActivity.class);
+            emptyIntent.putExtra(getString(R.string.NOTIFICATION_ID_KEY), 1);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    MainActivity.this,
+                    0,
+                    emptyIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                    );*/
+
+            final NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
+            final int notify_id = 1;
+            final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            builder.setSmallIcon(R.drawable.notification_icon);
+            builder.setOngoing(true);
+            builder.setContentTitle("Processing Status");
+            builder.setContentText("Processing in progress...");
+
+
+            int icr;
+            int status = managerClass.getProcessStatus(params[0], MainActivity.this);
+            for(icr = 0; icr < 100; icr = status){
+                //Log.d("k: ", " " + k);
+                builder.setProgress(100, icr, false);
+                notificationManager.notify(notify_id, builder.build());
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                status = managerClass.getProcessStatus(params[0], MainActivity.this);
+            }
+            builder.setOngoing(false);
+            builder.setProgress(0, 0, false);
+            builder.setContentText("Processing Complete");
+
+            //builder.addAction(R.drawable.icon_download, "Download", pendingIntent); // #0
+            //builder.addAction(R.drawable.icon_download, "Cancel", pendingIntent);  // #1
+            //builder.addAction(new NotificationCompat.Action(R.drawable.icon_download,"hey",
+            //        PendingIntent.getActivity(MainActivity.this, 0, downloadIntent, PendingIntent.FLAG_UPDATE_CURRENT)));
+            notificationManager.notify(notify_id, builder.build());
+
+
+            //process complete so now we should download the processed file
+            //FTPDownload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "video_downloaded.mp4");
+            //
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+    }
+
+    class InsertIntoTable extends AsyncTask<String, Void, Void> {
+        private ProgressDialog dialog;
+
+        public InsertIntoTable() {
+            dialog = new ProgressDialog(MainActivity.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Inserting into DB, please wait.");
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            Log.d("DB operations", "DB operations");
+            /*Log.d("params[0]", " " + params[0]);
+            Log.d("params[1]", " " + params[1]);
+            Log.d("params[2]", " " + params[2]);
+            Log.d("params[3]", " " + params[3]);
+            Log.d("params[4]", " " + params[4]);*/
+            //int k = managerClass.getProcessStatus(2, MainActivity.this);
+
+            newId = managerClass.getNewVideoId(MainActivity.this);
+            if(newId != -1){
+                managerClass.insertVideoToDB(MainActivity.this, newId, 0, Integer.parseInt(params[2]), params[3], Integer.parseInt(params[4]), params[5]);
+                managerClass.insertVideoToDB(MainActivity.this, newId, 1, Integer.parseInt(params[2]), params[3], Integer.parseInt(params[4]), params[5]);
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+    }
+
+    public void setNewVideoId(){
+        ProgressDialog dialog = new ProgressDialog(this); // this = YourActivity
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int tempId = managerClass.getNewVideoId(MainActivity.this);
+                newId = tempId;
+            }});
+
+        t.start(); // spawn thread
+
+        try {
+            t.join();  // wait for thread to finish
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        dialog.dismiss();
     }
 
     public void captureVideo(View view){
@@ -123,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             File direc = getExternalFilesDir(null);
             String absoPath = direc.getAbsolutePath();
-            fileInputStream = new FileInputStream(absoPath +"/sample_video.mp4");
+            fileInputStream = new FileInputStream(absoPath + "/sample_video.mp4");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -142,7 +369,15 @@ public class MainActivity extends AppCompatActivity {
             client.enterLocalPassiveMode();
             //client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
             Log.d("before store", "before");
+
             client.storeFile(Filename, fileInputStream);
+
+            //store successful so insert the uploaded video to videos table (wait until table is updated)
+            //new showProcessStatus().execute();
+            //newId
+            //new UpdateTable().execute();
+            //I am not user to update table here or after this method(FTPUpload)
+
             Log.d("after store", "after");
             fileInputStream.close();
             Log.d("Stream closed", "Stream closed");
@@ -231,8 +466,32 @@ public class MainActivity extends AppCompatActivity {
 
             // create a buffer of maximum size
             //AWS IP: 172.31.46.154/ec2-13-59-72-180.us-east-2.compute.amazonaws.com/13.58.144.50
-//            FTPUpload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "sample_video.mp4");
-            FTPDownload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "video_downloaded.mp4");
+            //For upload 3 lines
+            setNewVideoId();
+            String filename = "unprocessed/" + newId + ".mp4";
+            FTPUpload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, filename);
+            try {
+                new InsertIntoTable().execute("" + newId, "0", "200", "erkan.mp4", "0", username).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+
+            //if upload successful, add corresponding row for processed video to DB (initially processed bar as 0)
+            //and look for that processed video in database in 5 seconds intervals
+            /*try {
+                new showProcessStatus().execute(newId).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }*/
+
+            //Process became %100, it means that I can now download the processed file(whose type is 1) with FTPDownload
+            //For Download
+            //FTPDownload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, "video_downloaded.mp4");
             return null;
         }
     }
@@ -253,3 +512,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+

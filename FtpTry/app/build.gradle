@@ -27,4 +27,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation files('libs/commons-net-3.6.jar')
     compile 'org.apache.commons:commons-collections4:4.1'
+
+    compile 'com.amazonaws:aws-android-sdk-core:2.6.+'
+    compile('com.amazonaws:aws-android-sdk-auth-core:2.6.+@aar') { transitive = true; }
+    compile('com.amazonaws:aws-android-sdk-mobile-client:2.6.7@aar') { transitive = true; }
+    compile 'com.amazonaws:aws-android-sdk-ddb:2.6.+'
+    compile 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+    compile('com.amazonaws:aws-android-sdk-auth-userpools:2.6.+@aar') { transitive = true; }
+    compile 'com.amazonaws:aws-android-sdk-cognito:2.6.+'
+    compile 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.6.+'
+
 }
