@@ -1,4 +1,4 @@
-*****AWS Üzerinde Yapýlan Deðiþikliklerin Not Alýnmasý Ýçin*****
+*****AWS Ãœzerinde Yapilan Degisikliklerin Not Alinmasi IÃ§in*****
 
 -create IAM user
 
