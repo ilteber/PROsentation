@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PROsentation</string>
+    <string name="NOTIFICATION_ID_KEY">NOTIFICATION_ID_KEY</string>
+    <string name="action_settings">Settings</string>
+</resources>
