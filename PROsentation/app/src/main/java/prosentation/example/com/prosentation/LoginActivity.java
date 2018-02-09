@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
+        // Disable going back to the VideoTakeActivity
         moveTaskToBack(true);
     }
 

@@ -40,6 +40,7 @@
         <activity android:name=".LoginActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name=".SignupActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name=".EmptyActivity"></activity>
+        <activity android:name=".VideoTakeActivity"></activity>
 
     </application>
 
