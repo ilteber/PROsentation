@@ -2,6 +2,7 @@ package prosentation.example.com.prosentation;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.cognito.CognitoSyncManager;
@@ -23,7 +24,7 @@ import java.util.Map;
  * Created by lenovo on 6.2.2018.
  */
 
-public class DynamoDBManagerClass {
+public class DynamoDBManager {
     public static AmazonDynamoDBClient dynamoDBClient;
     public static DynamoDBMapper dynamoDBMapper;
 
@@ -71,6 +72,61 @@ public class DynamoDBManagerClass {
             Log.d("Unsuccessful Insert", "Unsuccessful Insert");
         }
         Log.d("Successful Insert", "Successful Insert");
+    }
+
+    public boolean insertUserToDB(Context context, String username, String email, String password){
+        CognitoCachingCredentialsProvider credentialsProvider = getCredentials(context);
+        UserMapper mapperClass = new UserMapper();
+        mapperClass.setUsername(username);
+        mapperClass.setEmail(email);
+        mapperClass.setPassword(password);
+
+        if(credentialsProvider != null){
+            DynamoDBMapper dynamoDBMapper = initDynamoClient(credentialsProvider);
+            Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+            eav.put(":val1", new AttributeValue().withS(username));
+            //eav.put(":val2", new AttributeValue().withS("VideoMapper"));
+
+            DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+                    .withFilterExpression("username = :val1").withExpressionAttributeValues(eav);
+            List<UserMapper> scanResult = dynamoDBMapper.scan(UserMapper.class, scanExpression);
+            if(scanResult.size() == 0){
+                dynamoDBMapper.save(mapperClass);
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            Log.d("Unsuccessful Insert", "Unsuccessful Insert");
+            return false;
+        }
+    }
+
+    public boolean loginToSystem(Context context, String username, String password){
+        CognitoCachingCredentialsProvider credentialsProvider = getCredentials(context);
+
+        if(credentialsProvider != null){
+            DynamoDBMapper dynamoDBMapper = initDynamoClient(credentialsProvider);
+            Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+            eav.put(":val1", new AttributeValue().withS(username));
+            eav.put(":val2", new AttributeValue().withS(password));
+
+            DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
+                    .withFilterExpression("username = :val1 and password = :val2").withExpressionAttributeValues(eav);
+            List<UserMapper> scanResult = dynamoDBMapper.scan(UserMapper.class, scanExpression);
+            if(scanResult.size() == 1){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            Log.d("Unsuccessful Insert", "Unsuccessful Insert");
+            return false;
+        }
     }
 
     public void deleteEntryInDB(Context context, int id, int type){

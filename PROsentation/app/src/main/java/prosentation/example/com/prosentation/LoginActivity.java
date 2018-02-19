@@ -2,6 +2,8 @@ package prosentation.example.com.prosentation;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,9 +23,13 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private DynamoDBManager managerClass = new DynamoDBManager();
+    boolean success;
+    SharedPreferences prefs;
+    String username;
 
-    @BindView(R.id.input_email)
-    EditText _emailText;
+    @BindView(R.id.input_username)
+    EditText _usernameText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login)
     Button _loginButton;
@@ -35,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -57,6 +64,26 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    class LoginToSystem extends AsyncTask<String, Void, Void> {
+        //        private ProgressDialog dialog;
+
+        @Override
+        protected Void doInBackground(String... params) {
+            Log.d("DB operations", "DB operations");
+
+            success = managerClass.loginToSystem(LoginActivity.this, params[0], params[1]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if(!success){
+                onLoginFailed();
+            }
+        }
+    }
+
+
     public void login() {
         Log.d(TAG, "Login");
 
@@ -73,17 +100,19 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
+        username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
+        new LoginToSystem().execute(username, password);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+                        if(success) {
+                            // On complete call either onLoginSuccess or onLoginFailed
+                            onLoginSuccess();
+                        }
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -110,26 +139,29 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        prefs.edit().putString("username", username).commit();
         finish();
+
+        Intent intent = new Intent(this, VideoTakeActivity.class);
+        startActivity(intent);
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _loginButton.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
+        String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+        if (username.isEmpty() || username.length() < 3) {
+            _usernameText.setError("enter a valid username address");
             valid = false;
         } else {
-            _emailText.setError(null);
+            _usernameText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {

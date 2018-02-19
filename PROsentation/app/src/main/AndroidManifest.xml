@@ -37,8 +37,14 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".LoginActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".SignupActivity" android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".LoginActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="Login To Your Account"/>
+
+        <activity android:name=".SignupActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="Create New Account"/>
+
         <activity android:name=".EmptyActivity"></activity>
         <activity android:name=".VideoTakeActivity"></activity>
 

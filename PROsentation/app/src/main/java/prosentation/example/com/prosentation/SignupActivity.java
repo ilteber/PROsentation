@@ -2,6 +2,7 @@ package prosentation.example.com.prosentation;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+    private DynamoDBManager managerClass = new DynamoDBManager();
 
     @BindView(R.id.input_name)
     EditText _nameText;
@@ -59,6 +61,42 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    class InsertUserIntoTable extends AsyncTask<String, Void, Void> {
+//        private ProgressDialog dialog;
+         boolean success;
+//
+//        public InsertUserIntoTable() {
+//            dialog = new ProgressDialog(SignupActivity.this);
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//            dialog.setMessage("Inserting into DB, please wait.");
+//            dialog.show();
+//        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            Log.d("DB operations", "DB operations");
+            /*Log.d("params[0]", " " + params[0]);
+            Log.d("params[1]", " " + params[1]);
+            Log.d("params[2]", " " + params[2]);
+            Log.d("params[3]", " " + params[3]);
+            Log.d("params[4]", " " + params[4]);*/
+            //int k = managerClass.getProcessStatus(2, VideoTakeActivity.this);
+
+            success = managerClass.insertUserToDB(SignupActivity.this, params[0], params[1], params[2]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if(!success){
+                onSignupFailed();
+            }
+        }
+    }
+
     public void signup() {
         Log.d(TAG, "Signup");
 
@@ -83,6 +121,7 @@ public class SignupActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
+        new InsertUserIntoTable().execute(name, email, password);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -104,7 +143,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Signup failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }

@@ -1,17 +1,22 @@
 package prosentation.example.com.prosentation;
 
-import android.app.Activity;
+import android.Manifest;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTP;
@@ -33,28 +39,44 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 
 public class VideoTakeActivity extends AppCompatActivity{
-    private DynamoDBManagerClass managerClass = new DynamoDBManagerClass();
-    private final String username = "erkan";
+    private static final String TAG = "VideoTakeActivity";
+    private DynamoDBManager managerClass = new DynamoDBManager();
     private int newId = -1;
-
     private ProgressBar progressBar;
+    private TextView textView;
     private int progressStatus = 0;
+    private String username;
+    String videoPath;
 
-    private int VIDEO_REQUEST_CODE = 100;
+    private static final int VIDEO_REQUEST_CODE = 1;
+    public static final int REQUEST_PICK_VIDEO = 2;
+    private static final int PERMISSION_REQUEST_CAMERA = 0;
+    private View mLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+
+        SharedPreferences prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
+        username = prefs.getString("username", "UNKNOWN");
+
         Log.d("erkan", "erkan");
         setContentView(R.layout.activity_videotake);
 
+        mLayout = findViewById(R.id.video_layout);
+
         progressBar = findViewById(R.id.progressBar1);
+
+        textView = (TextView)findViewById(R.id.textView1);
+        textView.setText(username);
 
         Log.d("Environment", Environment.getExternalStorageDirectory().toString());
         File dir = getExternalFilesDir(null);
@@ -90,7 +112,7 @@ public class VideoTakeActivity extends AppCompatActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
             return true;
         }
 
@@ -243,29 +265,23 @@ public class VideoTakeActivity extends AppCompatActivity{
     }
 
     class InsertIntoTable extends AsyncTask<String, Void, Void> {
-        private ProgressDialog dialog;
+       // private ProgressDialog dialog;
 
-        public InsertIntoTable() {
-            dialog = new ProgressDialog(VideoTakeActivity.this);
-        }
+//        public InsertIntoTable() {
+//            dialog = new ProgressDialog(VideoTakeActivity.this);
+//        }
 
-        @Override
-        protected void onPreExecute() {
-            dialog.setMessage("Inserting into DB, please wait.");
-            dialog.show();
-        }
+//        @Override
+//        protected void onPreExecute() {
+//            dialog.setMessage("Inserting into DB, please wait.");
+//            dialog.show();
+//        }
 
         @Override
         protected Void doInBackground(String... params) {
             Log.d("DB operations", "DB operations");
-            /*Log.d("params[0]", " " + params[0]);
-            Log.d("params[1]", " " + params[1]);
-            Log.d("params[2]", " " + params[2]);
-            Log.d("params[3]", " " + params[3]);
-            Log.d("params[4]", " " + params[4]);*/
             //int k = managerClass.getProcessStatus(2, VideoTakeActivity.this);
 
-            newId = managerClass.getNewVideoId(VideoTakeActivity.this);
             if(newId != -1){
                 managerClass.insertVideoToDB(VideoTakeActivity.this, newId, 0, Integer.parseInt(params[2]), params[3], Integer.parseInt(params[4]), params[5]);
                 managerClass.insertVideoToDB(VideoTakeActivity.this, newId, 1, Integer.parseInt(params[2]), params[3], Integer.parseInt(params[4]), params[5]);
@@ -274,21 +290,21 @@ public class VideoTakeActivity extends AppCompatActivity{
             return null;
         }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-        }
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            if (dialog.isShowing()) {
+//                dialog.dismiss();
+//            }
+//        }
     }
 
     public void setNewVideoId(){
-        ProgressDialog dialog = new ProgressDialog(this); // this = YourActivity
+        /*ProgressDialog dialog = new ProgressDialog(this); // this = YourActivity
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Loading. Please wait...");
         dialog.setIndeterminate(true);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        dialog.show();*/
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -304,7 +320,46 @@ public class VideoTakeActivity extends AppCompatActivity{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        dialog.dismiss();
+        //dialog.dismiss();
+    }
+
+    private void requestPermission() {
+        // Permission has not been granted and must be requested.
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            // Provide an additional rationale to the user if the permission was not granted
+            // and the user would benefit from additional context for the use of the permission.
+            // Display a SnackBar with cda button to request the missing permission.
+            Snackbar.make(mLayout, "Permission Needed",
+                    Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Request the permission
+                    ActivityCompat.requestPermissions(VideoTakeActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            PERMISSION_REQUEST_CAMERA);
+                }
+            }).show();
+
+        } else {
+            Snackbar.make(mLayout, "Permission is not available", Snackbar.LENGTH_SHORT).show();
+            // Request the permission. The result will be received in onRequestPermissionResult().
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CAMERA);
+        }
+    }
+    public void selectVideo(View view) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG).show();
+            Intent pickVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            pickVideoIntent.setType("video/*");
+            startActivityForResult(pickVideoIntent, REQUEST_PICK_VIDEO);
+        }
+        else {
+            Toast.makeText(this, "Not granted!", Toast.LENGTH_LONG).show();
+            requestPermission();
+        }
     }
 
     public void captureVideo(View view){
@@ -371,9 +426,10 @@ public class VideoTakeActivity extends AppCompatActivity{
         };
 
         try {
-            File direc = getExternalFilesDir(null);
-            String absoPath = direc.getAbsolutePath();
-            fileInputStream = new FileInputStream(absoPath + "/sample_video.mp4");
+                fileInputStream = new FileInputStream(videoPath);
+//            File direc = getExternalFilesDir(null);
+//            String absoPath = direc.getAbsolutePath();
+//            fileInputStream = new FileInputStream(absoPath + "/sample_video.mp4");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -398,7 +454,7 @@ public class VideoTakeActivity extends AppCompatActivity{
             //store successful so insert the uploaded video to videos table (wait until table is updated)
             //new showProcessStatus().execute();
             //newId
-            //new UpdateTable().execute();
+            //new InsertIntoTable().execute();
             //I am not user to update table here or after this method(FTPUpload)
 
             Log.d("after store", "after");
@@ -494,7 +550,9 @@ public class VideoTakeActivity extends AppCompatActivity{
             String filename = "unprocessed/" + newId + ".mp4";
             FTPUpload("ec2-13-59-72-180.us-east-2.compute.amazonaws.com", 1025, filename);
             try {
+                Log.d("after send","after send");
                 new InsertIntoTable().execute("" + newId, "0", "200", "erkan.mp4", "0", username).get();
+                Log.d("afsend","after send");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -521,18 +579,51 @@ public class VideoTakeActivity extends AppCompatActivity{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+
         Log.d("here1", "hocaa11: ");
-        if (requestCode == VIDEO_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == VIDEO_REQUEST_CODE) {
+
                 Toast.makeText(getApplicationContext(), "Video Successfully Recorded", Toast.LENGTH_LONG).show();
                 //Log.d("here", "hocaa: ");
                 String a = "hey";
                 BackgroundTask b = new BackgroundTask();
                 b.execute(a);
-            } else {
-                Toast.makeText(getApplicationContext(), "Video Capture Failed...", Toast.LENGTH_LONG).show();
+            } else if (requestCode == REQUEST_PICK_VIDEO) {
+                if (intent != null) {
+                    Log.i("pick video", "Video content URI: " + intent.getData());
+                    Toast.makeText(this, "Video content URI: " + intent.getDataString(),
+                            Toast.LENGTH_LONG).show();
+
+//                    //videoPath = intent.getDataString();
+//                    // SDK < API11
+//                    if (Build.VERSION.SDK_INT < 11)
+//                        videoPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, intent.getData());
+//
+//                        // SDK >= 11 && SDK < 19
+//                    else if (Build.VERSION.SDK_INT < 19)
+//                        videoPath = RealPathUtil.getRealPathFromURI_API11to18(this, intent.getData());
+//
+//                        // SDK > 19 (Android 4.4)
+//                    else
+//                        videoPath = RealPathUtil.getRealPathFromURI_API19(this, intent.getData());
+
+                    videoPath = RealPathUtil.getRealPathFromURI(this, intent.getData());
+
+                    Toast.makeText(this, "Video content URI: " + videoPath,
+                            Toast.LENGTH_LONG).show();
+
+                    String a = "hey";
+                    BackgroundTask b = new BackgroundTask();
+                    b.execute(a);
+                }
             }
         }
+        else if (resultCode != RESULT_CANCELED) {
+            Toast.makeText(this, "Sorry, there was an error!", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
 
