@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homepage"
+            android:title="Homepage"
+            android:icon="@drawable/icon_homepage"
+            ></item>
+        <item
+            android:id="@+id/profile"
+            android:title="Profile"
+            android:icon="@drawable/icon_profile"
+            ></item>
+        <item
+            android:id="@+id/presentations"
+            android:title="Presentations"
+            android:icon="@drawable/icon_presentations"
+            ></item>
+    </group>
+
+    <item android:title="Others">
+        <menu>
+            <item
+                android:id="@+id/pre_recorded"
+                android:title="Pre-recorded Videos"
+                android:icon="@drawable/icon_pre_recorded"
+                ></item>
+
+            <item
+                android:id="@+id/videos_sample"
+                android:title="Sample Videos"
+                android:icon="@drawable/icon_videos_sample"
+                ></item>
+
+            <item
+                android:id="@+id/about"
+                android:title="About"
+                android:icon="@drawable/icon_about"
+                ></item>
+            <item
+                android:id="@+id/help"
+                android:title="Help"
+                android:icon="@drawable/icon_help"
+                ></item>
+        </menu>
+    </item>
+</menu>

@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <!-- This is the starting activity of the application, you can change it if you want :) -->
+        <activity android:name=".VideoTakeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,17 +39,20 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".LoginActivity"
-            android:theme="@style/AppTheme.Dark"
-            android:label="Login To Your Account"/>
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login To Your Account"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".SignupActivity"
+            android:label="Create New Account"
+            android:theme="@style/AppTheme.Dark" />
 
-        <activity android:name=".SignupActivity"
-            android:theme="@style/AppTheme.Dark"
-            android:label="Create New Account"/>
+        <!-- Uncomment this if you are going to change your starting activity as mainactivity not videotakeactivity -->
+        <!-- <activity android:name=".VideoTakeActivity"></activity> -->
 
-        <activity android:name=".EmptyActivity"></activity>
-        <activity android:name=".VideoTakeActivity"></activity>
-
+        <activity android:name=".MyVideosActivity" />
+        <activity android:name=".VideoDetails"></activity>
     </application>
 
 </manifest>

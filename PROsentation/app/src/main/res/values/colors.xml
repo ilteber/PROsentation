@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#F50057</color>
+    <color name="colorPrimaryDark">#F50057</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="darkgray">#6c6c6c</color>
 
     <color name="primary">#BA68C8</color>
     <color name="primary_dark">#9C27B0</color>
@@ -18,4 +19,19 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="lightgray">#ededed</color>
+    <color name="deeppurple">#7c4dff</color>
+    <color name="yello">#ffb300</color>
+    <color name="green">#00bfa5</color>
+    <color name="darkblue">#23283a</color>
+    <color name="testolorblue">#152b38</color>
+    <color name="pink">#fe104d</color>
+    <color name="blue">#00AAFF</color>
+    <color name="orange">#FF8040</color>
+
+    <!-- Erkan Önal colorları-->
+    <color name="viewBg">#f1f5f8</color>
+
 </resources>
