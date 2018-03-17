@@ -16,6 +16,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class DynamoDBManager {
         mapperClass.setName(name);
         mapperClass.setStatus(status);
         mapperClass.setUsername(username);
-
+        mapperClass.setVideoDate(Calendar.getInstance().getTime().toString());
         if(credentialsProvider != null){
             DynamoDBMapper dynamoDBMapper = initDynamoClient(credentialsProvider);
             dynamoDBMapper.save(mapperClass);
