@@ -17,7 +17,7 @@ public class VideoMapper {
     String name;
     int status;
     String username;
-
+    String videoUploadDate;
     @DynamoDBHashKey(attributeName = "Id")
     @DynamoDBAttribute(attributeName = "Id")
     public int getId() {
@@ -73,5 +73,10 @@ public class VideoMapper {
     public void setUsername(String username) {
         this.username = username;
     }
+    @DynamoDBAttribute(attributeName = "videoUploadDate")
+
+    public String getVideoUploadDate(){ return  videoUploadDate;}
+
+    public void setVideoDate(String videoUploadDate){ this.videoUploadDate = videoUploadDate;}
 
 }
