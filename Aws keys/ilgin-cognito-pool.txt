@@ -1,0 +1,2 @@
+Pool Id us-east-2_nRqgIJq04
+Pool ARN arn:aws:cognito-idp:us-east-2:849228696955:userpool/us-east-2_nRqgIJq04
