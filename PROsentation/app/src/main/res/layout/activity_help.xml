@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="prosentation.example.com.prosentation.Activities.HelpActivity"
+    android:background="@color/graylight"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:background="?colorPrimaryDark">
+
+        <include
+            layout="@layout/toolbar_layout"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.Dark"
+            app:title="@string/app_name"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView
+                        android:id="@+id/expandable_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:maxCollapsedLines="1"
+                        app:animAlphaStart="1000">
+
+
+                        <TextView
+                            android:id="@+id/text_id"
+                            android:layout_marginTop="70dp"
+                            android:layout_gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="What is PROsentation?"
+                            android:textColor="#fff"
+                            android:textStyle="bold|italic"
+                            android:textSize="18sp"/>
+
+                        <ImageButton
+                            android:id="@+id/expand_collapse"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
+                            android:padding="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/expandable_text"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textColor="#666"
+                            android:textSize="16sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView
+                        android:id="@+id/expandable_text_view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:maxCollapsedLines="1"
+                        app:animAlphaStart="1000">
+
+
+                        <TextView
+                            android:id="@+id/text_id2"
+                            android:layout_marginTop="20dp"
+                            android:layout_gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Why you should use it?"
+                            android:textColor="#fff"
+                            android:textStyle="bold|italic"
+                            android:textSize="18sp"/>
+
+                        <ImageButton
+                            android:id="@+id/expand_collapse"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
+                            android:padding="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/expandable_text"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textColor="#666"
+                            android:textSize="16sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView
+                        android:id="@+id/expandable_text_view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:maxCollapsedLines="1"
+                        app:animAlphaStart="1000">
+
+
+                        <TextView
+                            android:id="@+id/text_id3"
+                            android:layout_marginTop="20dp"
+                            android:layout_gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="How to use it?"
+                            android:textColor="#fff"
+                            android:textStyle="bold|italic"
+                            android:textSize="18sp"/>
+
+                        <ImageButton
+                            android:id="@+id/expand_collapse"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
+                            android:padding="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/expandable_text"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textColor="#666"
+                            android:textSize="16sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView
+                        android:id="@+id/expandable_text_view4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:maxCollapsedLines="1"
+                        app:animAlphaStart="1000">
+
+
+                        <TextView
+                            android:id="@+id/text_id4"
+                            android:layout_marginTop="20dp"
+                            android:layout_gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="How to be a good presenter?"
+                            android:textColor="#fff"
+                            android:textStyle="bold|italic"
+                            android:textSize="18sp"/>
+
+                        <ImageButton
+                            android:id="@+id/expand_collapse"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
+                            android:padding="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/expandable_text"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textColor="#666"
+                            android:textSize="16sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView
+                        android:id="@+id/expandable_text_view5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:maxCollapsedLines="1"
+                        app:animAlphaStart="1000">
+
+
+                        <TextView
+                            android:id="@+id/text_id5"
+                            android:layout_marginTop="20dp"
+                            android:layout_gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="About us"
+                            android:textColor="#fff"
+                            android:textStyle="bold|italic"
+                            android:textSize="18sp"/>
+
+                        <ImageButton
+                            android:id="@+id/expand_collapse"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
+                            android:padding="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/expandable_text"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textColor="#666"
+                            android:textSize="16sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
