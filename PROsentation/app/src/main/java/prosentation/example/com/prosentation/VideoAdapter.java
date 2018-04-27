@@ -6,7 +6,8 @@ package prosentation.example.com.prosentation;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,16 +20,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
-import java.util.HashMap;
+import java.io.InputStream;
 import java.util.List;
+
+import prosentation.example.com.prosentation.Entity.Video;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder>{
     private Context mContext;
     private List<Video> albumList;
+    private final OnItemClickListener listener;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView title, count;
         public ImageView thumbnail, overflow;
 
@@ -39,12 +41,28 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
         }
+
+        //İşe yaramıyor sonra sil bunu
+        @Override
+        public void onClick(View view) {
+            int position  =   getAdapterPosition();
+            Log.w("Listener Clicked", "Selected: " + position);
+        }
+
+        public void bind(final Video video, final OnItemClickListener listener) {
+            thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(video);
+                }
+            });
+        }
     }
 
 
-    public VideoAdapter(Context mContext, List<Video> albumList) {
+    public VideoAdapter(Context mContext, List<Video> albumList, OnItemClickListener listener) {
         this.mContext = mContext;
         this.albumList = albumList;
+        this.listener = listener;
     }
 
     @Override
@@ -58,11 +76,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Video video = albumList.get(position);
-        holder.title.setText(video.getName());
+        holder.title.setText(video.getId() + ".mp4");
         holder.count.setText(video.getNumOfContents() + " contents");
+        holder.bind(albumList.get(position), listener);
 
-        // loading album cover using Glide library
-        Glide.with(mContext).load(video.getThumbnail()).into(holder.thumbnail);
+        // loading thumnail using Glide library
+        //Glide.with(mContext).load(video.getThumbnail()).into(holder.thumbnail);
+
+        //String mUri = "http://ec2-18-222-71-24.us-east-2.compute.amazonaws.com/erkan/unprocessed/album10.png";
+        String mUri = video.getThumbnailURL();
+
+        new DownloadThumbnailTask((ImageView)holder.thumbnail).execute(mUri);
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +94,31 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                 showPopupMenu(holder.overflow);
             }
         });
+    }
+
+    private class DownloadThumbnailTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadThumbnailTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
     /**

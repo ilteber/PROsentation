@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import prosentation.example.com.prosentation.DynamoDB.DynamoDBManager;
 
 /**
  * Created by lenovo on 6.2.2018.

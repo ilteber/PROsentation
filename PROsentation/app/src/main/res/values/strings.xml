@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">PROsentation</string>
     <string name="NOTIFICATION_ID_KEY">NOTIFICATION_ID_KEY</string>
+    <string name="action_account">Account</string>
     <string name="action_help">Help</string>
+    <string name="action_logout">Logout</string>
 
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
@@ -12,5 +14,8 @@
     <string name="action_play_next">Play Next</string>
     <string name="backdrop_title">Love Presentation</string>
     <string name="backdrop_subtitle">This content top 20</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

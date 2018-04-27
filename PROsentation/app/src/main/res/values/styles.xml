@@ -28,4 +28,9 @@
         <item name="android:background">@color/primary</item>
     </style>
 
+    <!-- Text Size For Fragments -->
+    <style name="ErkanCustomTextSize" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">11sp</item>
+    </style>
+
 </resources>

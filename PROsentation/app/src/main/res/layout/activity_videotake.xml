@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/video_layout"
-    tools:context="prosentation.example.com.prosentation.VideoTakeActivity">
+    tools:context="prosentation.example.com.prosentation.Activities.VideoTakeActivity">
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -155,25 +155,29 @@
                         android:layout_height="64dp"
                         android:background="@drawable/cerclebackgroundpurple"
                         android:src="@drawable/ic_account_circle_black_24dp"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:onClick="startUserProfileActivity"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:text="User Profile"/>
+                        android:text="User Profile"
+                        android:onClick="startUserProfileActivity"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/lightgray"
-                        android:layout_margin="10dp"/>
+                        android:layout_margin="10dp"
+                        android:onClick="startUserProfileActivity"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="View your profile"
                         android:padding="5dp"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textColor="@android:color/darker_gray"
+                        android:onClick="startUserProfileActivity"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -282,20 +286,23 @@
                         android:layout_height="64dp"
                         android:background="@drawable/cerclebackgroundblue"
                         android:padding="10dp"
-                        android:src="@drawable/ic_help_black_24dp" />
+                        android:src="@drawable/ic_help_black_24dp"
+                        android:onClick="startHelpActivity"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Help"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:onClick="startHelpActivity"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_margin="10dp"
-                        android:background="@color/lightgray" />
+                        android:background="@color/lightgray"
+                        android:onClick="startHelpActivity"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -303,7 +310,8 @@
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="Learn everything about our app"
-                        android:textColor="@android:color/darker_gray" />
+                        android:textColor="@android:color/darker_gray"
+                        android:onClick="startHelpActivity"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
