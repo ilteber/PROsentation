@@ -4,6 +4,8 @@ import os
 import signal
 import glob
 import sys
+import shutil
+import datetime
 import threading
 import time
 import pathlib
@@ -33,12 +35,18 @@ def process_pose(in_f,out_f):
                      ""
                 subprocess.call(cmd,shell=True)
             else:
-                print('{} exists'.format(vid))
+                print('{} exists'.format(folder_name))
         except KeyboardInterrupt:
             print('SigINT caught in Pose, removing json files for: '+ folder_name)
-            for x in temp_arr:
+            bad_array = glob.glob(out_path + '/*.json')
+            print('length of temp_array is {}'.format(bad_array))
+            for x in bad_array:
+                print(str(x))
+                print('hello')
                 os.remove(x)
             print('Removed jsons for: ' + folder_name)
+            sys.exit(0)
+
 def process_gaze(in_f,out_f):
     dataset = in_f+'/gaze/'
     dataset_out = out_f+'/gaze/'
@@ -62,8 +70,14 @@ def process_gaze(in_f,out_f):
                 print('{} exists'.format(vid))
         except KeyboardInterrupt:
             print('SigINT caught in gaze, removing csv files for ' + folder_name)
-            os.remove(vid_csv)
-            print('Removed csv files for ' + folder_name)
+            temp_rem = os.listdir(out_path)
+            for f in temp_rem:
+                if not os.path.isdir(out_path+f):
+                    os.remove(out_path+f)
+                else:
+                    shutil.rmtree(out_path+f)
+            print('Removing csv files for ' + folder_name)
+            sys.exit(0)
 
 def process_face(in_f,out_f):
     dataset = in_f + '/face/'
@@ -87,8 +101,14 @@ def process_face(in_f,out_f):
                 print('{} exists'.format(vid))
         except KeyboardInterrupt:
             print('SigINT caught in face, removing csv files for ' + folder_name)
-            os.remove(vid_csv)
+            temp_rem = os.listdir(out_path)
+            for f in temp_rem:
+                if not os.path.isdir(out_path+f):
+                    os.remove(out_path+f)
+                else:
+                    shutil.rmtree(out_path+f)
             print('Removing csv files for ' + folder_name)
+            sys.exit(0)
 
 if __name__ == '__main__':
 

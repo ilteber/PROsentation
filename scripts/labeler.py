@@ -30,7 +30,7 @@ if __name__ == '__main__':
             print('errorrr ' +video_name+ 'does not exists')
             # raise
         elif video_name not in out_dirs:
-            print('errorrr ' + video_name + 'is not in dataset_out')
+            print('errorrr ' + video_name + 'is in the labels but not in dataset_out')
             raise
         else:
             if not os.path.isfile(out_path+video_name+'/'+video_name+'.txt'):
@@ -45,7 +45,7 @@ if __name__ == '__main__':
 if len(out_dirs) > 0:
     for unwanted in out_dirs:
         if os.path.isdir(out_path+unwanted):
-            print('moving '+unwanted)
+            print(unwanted+' exists in dataset, but not in labels.')
             shutil.move(out_path+unwanted,out_path+'unwanted/')
         else:
             print('Cannot move, error ')
