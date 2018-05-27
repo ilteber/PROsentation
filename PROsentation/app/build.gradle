@@ -18,6 +18,8 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -60,9 +62,22 @@ dependencies {
     // Expandable Text View
     implementation 'com.ms-square:expandableTextView:0.1.4'
 
-    //UniversalVideoView
-    compile 'com.linsea:universalvideoview:1.1.0@aar'
+    // UniversalVideoView
+    implementation 'com.linsea:universalvideoview:1.1.0@aar'
 
-    //MPAndroidChart
+    // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    // AnimatedCircleLoadingView
+    implementation 'com.github.jlmd:AnimatedCircleLoadingView:1.1.5@aar'
+
+    // ElasticDownload
+    implementation 'com.github.tibolte:elasticdownload:1.0.+'
+
+    // Circle Progress
+    implementation 'com.github.lzyzsd:circleprogress:1.2.1'
+
+    // Swipe to Refresh
+    compile 'com.android.support:support-v4:26.0.+'
+
 }

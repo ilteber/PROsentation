@@ -2,6 +2,9 @@ package prosentation.example.com.prosentation.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,13 +20,21 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import prosentation.example.com.prosentation.R;
 
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     TextView txt1, txt2, txt3, txt4, txt5;
 
     ExpandableTextView expandableTextView, expandableTextView2, expandableTextView3, expandableTextView4, expandableTextView5;
     String longText = "\n" +
-            "Help Page could be reached from every page of the application by pressing the Help button at the top of the current page. It will include information about what is PROsentation, why users should use it, how to use the application and how to be a good presenter. There will also be a ‘Give us feedback’ and ‘About us’ section on Help Page. ";
+            "How important is the way you give your presentations to be successful in both academic and professional communities? Today’s competitive and fast-moving world is looking for individuals who have the ability to present not only to express but also to impress. Hence, remarkable presentation skills will help you shine out in your career. PROsentation, which is an Android application, offers a feedback mechanism for users’ presentation videos based on four different behavioral modalities, such as facial expression, gaze, hand gesture and voice. Users can view their scores for each modality separately and all together through interactive graphs. Briefly, PROsentation is the blueprint for a career full of success. ";
+    String longText2 = "\n" +
+            "Open the app, then either record your presentation from record section or select one of your videos from your phone gallery. Upload it, wait for processing and see your result details from My Videos section. You can publish your videos as others are able to see them. And, you can check your profile to see your overall scores from all your presentations based on face, gaze, pose and voice. ";
+    String longText3 = "\n" +
+            "Effective presentations are a mixture of a variety of elements. You have to know what your audience wants. You need to prepare good, interesting, engaging content. You must be confident in presenting the material, you have to know how to manage your environment successfully, and you need to make sure that your message has maximum impact.";
+    String longText4 = "\n" +
+            "We are senior year students and this is our senior project!" +"\n" +
+            "Developers; İlteber Ayvacı, Afra Dömeke, Ömer Mesud Toker, Ilgın Çamoğlu, Erkan Önal"+"\n" +
+            "Thank you for using PROsentation!";
 
     private String username;
     private String email;
@@ -31,6 +43,11 @@ public class HelpActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private TextView usernameHeader;
+    private TextView emailHeader;
+
+    private NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +56,8 @@ public class HelpActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);setSupportActionBar(toolbar);
 
+        drawerLayout = (DrawerLayout)findViewById(R.id.nav_bar);
+
         username = getIntent().getStringExtra("USERNAME");
         email = getIntent().getStringExtra("EMAIL");
         password = getIntent().getStringExtra("PASSWORD");
@@ -46,33 +65,37 @@ public class HelpActivity extends AppCompatActivity {
         expandableTextView = (ExpandableTextView)findViewById(R.id.expandable_text_view);
         expandableTextView.setText(longText);
 
-        expandableTextView2 = (ExpandableTextView)findViewById(R.id.expandable_text_view2);
-        expandableTextView2.setText(longText);
-
         expandableTextView3 = (ExpandableTextView)findViewById(R.id.expandable_text_view3);
-        expandableTextView3.setText(longText);
+        expandableTextView3.setText(longText2);
 
         expandableTextView4 = (ExpandableTextView)findViewById(R.id.expandable_text_view4);
-        expandableTextView4.setText(longText);
+        expandableTextView4.setText(longText3);
 
         expandableTextView5 = (ExpandableTextView)findViewById(R.id.expandable_text_view5);
-        expandableTextView5.setText(longText);
+        expandableTextView5.setText(longText4);
 
 
         txt1 = (TextView)findViewById(R.id.text_id);
-        txt1.setBackgroundColor(Color.parseColor("#F50057"));
-
-        txt2 = (TextView)findViewById(R.id.text_id2);
-        txt2.setBackgroundColor(Color.parseColor("#BA68C8"));
-
+        // txt2 = (TextView)findViewById(R.id.text_id2);
         txt3 = (TextView)findViewById(R.id.text_id3);
-        txt3.setBackgroundColor(Color.parseColor("#9C27B0"));
-
         txt4 = (TextView)findViewById(R.id.text_id4);
-        txt4.setBackgroundColor(Color.parseColor("#6A1B9A"));
-
         txt5 = (TextView)findViewById(R.id.text_id5);
-        txt5.setBackgroundColor(Color.parseColor("#7c4dff"));
+
+        navigationView =(NavigationView) findViewById(R.id.navigation_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
+                R.string.drawer_close);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+
+        usernameHeader = (TextView)headerView.findViewById(R.id.name);
+        emailHeader = (TextView)headerView.findViewById(R.id.email);
+
+        usernameHeader.setText(username);
+        emailHeader.setText(email);
+        actionBarDrawerToggle.syncState();
     }
 
     @Override
@@ -116,5 +139,61 @@ public class HelpActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.pendingVideos: {
+                //do something
+                Toast.makeText(this, "Pending Videos clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HelpActivity.this, PendingVideosActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                HelpActivity.this.startActivity(intent);
+                break;
+            }
+
+            case R.id.profile: {
+                Intent intent = new Intent(HelpActivity.this, UserProfileActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                HelpActivity.this.startActivity(intent);
+                break;
+            }
+
+            case R.id.pre_recorded: {
+                Intent intent = new Intent(HelpActivity.this, MyVideosActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                HelpActivity.this.startActivity(intent);
+                break;
+            }
+
+            case R.id.videos_sample: {
+                Intent intent = new Intent(HelpActivity.this, PublishedVideosActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                HelpActivity.this.startActivity(intent);
+                break;
+            }
+            case R.id.help: {
+                Intent intent = new Intent(HelpActivity.this, HelpActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                HelpActivity.this.startActivity(intent);
+                break;
+            }
+        }
+        item.setChecked(true);
+        //close navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="prosentation.example.com.prosentation.Fragments.InstantFragment">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        tools:context="prosentation.example.com.prosentation.Activities.VideoDetailsActivity">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+            <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/coordinatorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <include layout="@layout/content_video_details" />
+                </LinearLayout>
+            </android.support.design.widget.CoordinatorLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="2dp">
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/cardSimpleLineGraph3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@android:color/white"
+                                app:cardElevation="2sp"
+                                app:cardUseCompatPadding="true">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="2dp">
+
+                                    <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/chart_average"
+                                        android:layout_width="350dp"
+                                        android:layout_height="250dp" />
+
+                                    <TextView
+                                        android:id="@+id/title2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/chart_average"
+                                        android:layout_marginTop="8dp"
+                                        android:maxLines="3"
+                                        android:text="Overall Scores"
+                                        android:textColor="#222"
+                                        android:textSize="22dp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/title2"
+                                        android:maxLines="3"
+                                        android:text="Face, Gaze, Voice and Pose"
+                                        android:textColor="#666"
+                                        android:textSize="14dp" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginBottom="21dp"
+                                        android:layout_marginEnd="14dp"
+                                        android:orientation="vertical"></LinearLayout>
+
+                                </RelativeLayout>
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="2dp">
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/cardSimpleLineGraph4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@android:color/white"
+                                app:cardElevation="2sp"
+                                app:cardUseCompatPadding="true">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="2dp">
+
+                                    <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/chart_face"
+                                        android:layout_width="350dp"
+                                        android:layout_height="250dp" />
+
+                                    <TextView
+                                        android:id="@+id/title5"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/chart_face"
+                                        android:layout_marginTop="8dp"
+                                        android:maxLines="3"
+                                        android:text="Overall Scores"
+                                        android:textColor="#222"
+                                        android:textSize="22dp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/title5"
+                                        android:maxLines="3"
+                                        android:text="Face"
+                                        android:textColor="#666"
+                                        android:textSize="14dp" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginBottom="21dp"
+                                        android:layout_marginEnd="14dp"
+                                        android:orientation="vertical"></LinearLayout>
+
+                                </RelativeLayout>
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="2dp">
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/cardSimpleLineGraph5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@android:color/white"
+                                app:cardElevation="2sp"
+                                app:cardUseCompatPadding="true">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="2dp">
+
+                                    <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/chart_gaze"
+                                        android:layout_width="350dp"
+                                        android:layout_height="250dp" />
+
+                                    <TextView
+                                        android:id="@+id/title6"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/chart_gaze"
+                                        android:layout_marginTop="8dp"
+                                        android:maxLines="3"
+                                        android:text="Overall Scores"
+                                        android:textColor="#222"
+                                        android:textSize="22dp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/title6"
+                                        android:maxLines="3"
+                                        android:text="Gaze"
+                                        android:textColor="#666"
+                                        android:textSize="14dp" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginBottom="21dp"
+                                        android:layout_marginEnd="14dp"
+                                        android:orientation="vertical"></LinearLayout>
+
+                                </RelativeLayout>
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="2dp">
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/cardSimpleLineGraph11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@android:color/white"
+                                app:cardElevation="2sp"
+                                app:cardUseCompatPadding="true">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="2dp">
+
+                                    <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/chart_pose"
+                                        android:layout_width="350dp"
+                                        android:layout_height="250dp" />
+
+                                    <TextView
+                                        android:id="@+id/title7"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/chart_pose"
+                                        android:layout_marginTop="8dp"
+                                        android:maxLines="3"
+                                        android:text="Overall Scores"
+                                        android:textColor="#222"
+                                        android:textSize="22dp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/title7"
+                                        android:maxLines="3"
+                                        android:text="Pose"
+                                        android:textColor="#666"
+                                        android:textSize="14dp" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginBottom="21dp"
+                                        android:layout_marginEnd="14dp"
+                                        android:orientation="vertical"></LinearLayout>
+
+                                </RelativeLayout>
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="2dp">
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/cardSimpleLineGraph7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@android:color/white"
+                                app:cardElevation="2sp"
+                                app:cardUseCompatPadding="true">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="2dp">
+
+                                    <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/chart_voice"
+                                        android:layout_width="350dp"
+                                        android:layout_height="250dp" />
+
+                                    <TextView
+                                        android:id="@+id/title8"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/chart_voice"
+                                        android:layout_marginTop="8dp"
+                                        android:maxLines="3"
+                                        android:text="Overall Scores"
+                                        android:textColor="#222"
+                                        android:textSize="22dp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/title8"
+                                        android:maxLines="3"
+                                        android:text="Voice"
+                                        android:textColor="#666"
+                                        android:textSize="14dp" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginBottom="21dp"
+                                        android:layout_marginEnd="14dp"
+                                        android:orientation="vertical"></LinearLayout>
+
+                                </RelativeLayout>
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="2dp">
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/cardSimpleLineGraph"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@android:color/white"
+                                app:cardElevation="2sp"
+                                app:cardUseCompatPadding="true">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="2dp">
+
+                                    <com.github.mikephil.charting.charts.LineChart
+                                        android:id="@+id/chart_realtime"
+                                        android:layout_width="350dp"
+                                        android:layout_height="250dp" />
+
+
+                                    <TextView
+                                        android:id="@+id/title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/chart_realtime"
+                                        android:layout_marginTop="8dp"
+                                        android:maxLines="3"
+                                        android:text="Realtime Performance Graph"
+                                        android:textColor="#222"
+                                        android:textSize="22dp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/title"
+                                        android:maxLines="3"
+                                        android:text="Including Face, Gaze, Gesture, Voice"
+                                        android:textColor="#666"
+                                        android:textSize="14dp" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_marginBottom="21dp"
+                                        android:layout_marginEnd="14dp"
+                                        android:orientation="vertical"></LinearLayout>
+
+                                </RelativeLayout>
+                            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

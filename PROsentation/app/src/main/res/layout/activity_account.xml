@@ -5,11 +5,13 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 android:fitsSystemWindows="true"
-tools:context="prosentation.example.com.prosentation.Activities.AccountActivity">
+tools:context="prosentation.example.com.prosentation.Activities.AccountActivity"
+    android:background="@drawable/grad_bg">
 
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/grad_bg">
 
     <!--<include
         layout="@layout/toolbar_layout"
@@ -26,11 +28,13 @@ tools:context="prosentation.example.com.prosentation.Activities.AccountActivity"
         android:paddingRight="24dp">
 
 
-        <ImageView android:src="@drawable/logo"
+        <ImageView android:src="@drawable/kck"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal" />
+
+
 
         <!--  Username Label -->
         <android.support.design.widget.TextInputLayout
@@ -82,7 +86,9 @@ tools:context="prosentation.example.com.prosentation.Activities.AccountActivity"
             android:padding="12dp"
             android:text="Save changes"
             android:clickable="true"
-            android:onClick="saveChanges"/>
+            android:onClick="saveChanges"
+            android:background="@drawable/grad_bg"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 </LinearLayout>

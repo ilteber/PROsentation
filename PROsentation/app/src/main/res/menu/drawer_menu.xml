@@ -12,8 +12,8 @@
             android:icon="@drawable/icon_profile"
             ></item>
         <item
-            android:id="@+id/presentations"
-            android:title="Presentations"
+            android:id="@+id/pendingVideos"
+            android:title="Pending Videos"
             android:icon="@drawable/icon_presentations"
             ></item>
     </group>
@@ -22,21 +22,16 @@
         <menu>
             <item
                 android:id="@+id/pre_recorded"
-                android:title="Pre-recorded Videos"
+                android:title="My Videos"
                 android:icon="@drawable/icon_pre_recorded"
                 ></item>
 
             <item
                 android:id="@+id/videos_sample"
-                android:title="Sample Videos"
+                android:title="Published Videos"
                 android:icon="@drawable/icon_videos_sample"
                 ></item>
 
-            <item
-                android:id="@+id/about"
-                android:title="About"
-                android:icon="@drawable/icon_about"
-                ></item>
             <item
                 android:id="@+id/help"
                 android:title="Help"

@@ -1,113 +1,112 @@
 package prosentation.example.com.prosentation.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Typeface;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.res.Configuration;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.universalvideoview.UniversalMediaController;
-import com.universalvideoview.UniversalVideoView;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-
-import prosentation.example.com.prosentation.Fragments.VideoDetailsActivityFragments.FaceFragment;
-import prosentation.example.com.prosentation.Fragments.VideoDetailsActivityFragments.GazeFragment;
-import prosentation.example.com.prosentation.Fragments.VideoDetailsActivityFragments.GestureFragment;
-import prosentation.example.com.prosentation.Fragments.VideoDetailsActivityFragments.TotalFragment;
-import prosentation.example.com.prosentation.Fragments.VideoDetailsActivityFragments.VoiceFragment;
+import prosentation.example.com.prosentation.FormatRelated.CategoryAxisValueFormatter;
+import prosentation.example.com.prosentation.Fragments.InstantFragment;
+import prosentation.example.com.prosentation.Fragments.SummaryFragment;
+import prosentation.example.com.prosentation.ListViewItems.ChartItem;
+import prosentation.example.com.prosentation.LoginActivity;
 import prosentation.example.com.prosentation.R;
+import prosentation.example.com.prosentation.Utils.DataGenerator;
+
+//afra
+import android.widget.ImageView;
+
+import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
 
 public class VideoDetailsActivity extends AppCompatActivity {
-    private Button clk;;
-    private VideoView videov;
-    private MediaController mediaController;
-    private ProgressDialog progressDialog;
-    private Fragment fragment = null;
-    private String videoURL;
     private int videoID;
+
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private Toolbar toolbar;
 
     private String username;
     private String email;
     private String password;
-
-    //Fragments related items
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    //private ActionBarDrawerToggle actionBarDrawerToggle;
-
-    boolean isFullscreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_details);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);setSupportActionBar(toolbar);
-        // Show the Up button in the action bar.
-        /*ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }*/
-
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
         username = getIntent().getStringExtra("USERNAME");
         email = getIntent().getStringExtra("EMAIL");
         password = getIntent().getStringExtra("PASSWORD");
 
         videoID = Integer.parseInt(getIntent().getStringExtra("VIDEO_ID"));
-        videoURL = getIntent().getStringExtra("STREAM_VIDEO_URL");
-        Log.d("here", "set thumbnail");
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
     }
 
     @Override
@@ -142,59 +141,70 @@ public class VideoDetailsActivity extends AppCompatActivity {
             return true;
         }
         if(id == R.id.action_logout){
-            Toast.makeText(this, "Logout clicked", Toast.LENGTH_SHORT).show();
+            SharedPreferences preferences = getSharedPreferences("MyApp", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if(id == android.R.id.home){
+            this.finish();
             return true;
         }
 
-        /*if(id == R.id.home){
-            Toast.makeText(this, "Back clicked", Toast.LENGTH_SHORT).show();
-            this.finish();
-            NavUtils.navigateUpTo(this, new Intent(this, MyVideosActivity.class));
-            return true;
-        }*/
-
-        /*if(actionBarDrawerToggle.onOptionsItemSelected(item)){
-            return true;
-        }*/
 
         return super.onOptionsItemSelected(item);
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private void setupTabIcons() {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+        TextView tabSummary = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabSummary.setText("Summary");
+        tabSummary.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.summary_icon, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(tabSummary);
+
+        TextView tabInstant = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabInstant.setText("Instant");
+        tabInstant.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.instant_icon, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(tabInstant);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.addFrag(new SummaryFragment(), "Summary");
+        adapter.addFrag(new InstantFragment(), "Instant");
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
-                case 0:
-                    TotalFragment totalFragment = new TotalFragment();
-                    Bundle args = new Bundle();
-                    args.putString("VIDEO_ID","" + videoID);
-                    args.putString("STREAM_VIDEO_URL",videoURL);
-                    totalFragment.setArguments(args);
-                    return totalFragment;
-                case 1:
-                    FaceFragment faceFragment = new FaceFragment();
-                    return faceFragment;
-                case 2:
-                    GazeFragment gazeFragment = new GazeFragment();
-                    return gazeFragment;
-                case 3:
-                    GestureFragment gestureFragment = new GestureFragment();
-                    return gestureFragment;
-                case 4:
-                    VoiceFragment voiceFragment = new VoiceFragment();
-                    return voiceFragment;
-            }
-            return null;
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 }

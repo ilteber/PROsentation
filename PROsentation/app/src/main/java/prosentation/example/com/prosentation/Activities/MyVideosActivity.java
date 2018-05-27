@@ -5,8 +5,13 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,8 +19,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -29,8 +38,8 @@ import prosentation.example.com.prosentation.OnItemClickListener;
 import prosentation.example.com.prosentation.R;
 import prosentation.example.com.prosentation.VideoAdapter;
 
-public class MyVideosActivity extends AppCompatActivity {
-    private DynamoDBManager managerClass = new DynamoDBManager();
+public class MyVideosActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    private static DynamoDBManager managerClass = DynamoDBManager.getInstance();
     private RecyclerView recyclerView;
     private VideoAdapter adapter;
     private List<Video> videoList;
@@ -39,6 +48,13 @@ public class MyVideosActivity extends AppCompatActivity {
     private String username;
     private String email;
     private String password;
+    private NavigationView navigationView;
+    private TextView textView;
+    private TextView usernameHeader;
+    private TextView emailHeader;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +64,7 @@ public class MyVideosActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("USERNAME");
         email = getIntent().getStringExtra("EMAIL");
         password = getIntent().getStringExtra("PASSWORD");
-
+        drawerLayout = (DrawerLayout)findViewById(R.id.main_content2);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -79,17 +95,40 @@ public class MyVideosActivity extends AppCompatActivity {
 
         prepareAlbums();
 
-        try {
-            Glide.with(this).load(R.drawable.souma).into((ImageView) findViewById(R.id.backdrop));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        navigationView =(NavigationView) findViewById(R.id.navigation_view);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
+                R.string.drawer_close);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        textView = findViewById(R.id.text_preamble_myvideos);
+        textView.setText("You have "+ videoList.size() + " presentations");
+
+        View headerView = navigationView.getHeaderView(0);
+
+        usernameHeader = (TextView)headerView.findViewById(R.id.name);
+        emailHeader = (TextView)headerView.findViewById(R.id.email);
+
+        usernameHeader.setText(username);
+        emailHeader.setText(email);
+        actionBarDrawerToggle.syncState();
+
+
+
     }
 
     /**
      * Initializing collapsing toolbar
      * Will show and hide the toolbar title on scroll
      */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -118,6 +157,62 @@ public class MyVideosActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.pendingVideos: {
+                //do something
+                Toast.makeText(this, "Pending Videos clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MyVideosActivity.this, PendingVideosActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                MyVideosActivity.this.startActivity(intent);
+                break;
+            }
+
+            case R.id.profile: {
+                Intent intent = new Intent(MyVideosActivity.this, UserProfileActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                MyVideosActivity.this.startActivity(intent);
+                break;
+            }
+
+            case R.id.pre_recorded: {
+                Intent intent = new Intent(MyVideosActivity.this, MyVideosActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                MyVideosActivity.this.startActivity(intent);
+                break;
+            }
+
+            case R.id.videos_sample: {
+                Intent intent = new Intent(MyVideosActivity.this, PublishedVideosActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                MyVideosActivity.this.startActivity(intent);
+                break;
+            }
+            case R.id.help: {
+                Intent intent = new Intent(MyVideosActivity.this, HelpActivity.class);
+                intent.putExtra("USERNAME", username);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PASSWORD", password);
+                MyVideosActivity.this.startActivity(intent);
+                break;
+            }
+        }
+        item.setChecked(true);
+        //close navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     class MyVideosGetterBackground extends AsyncTask<Void, Void, Void> {
         ArrayList<Video> myVideos;
         public MyVideosGetterBackground(ArrayList<Video> myVideos){
@@ -126,7 +221,7 @@ public class MyVideosActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             Log.d("DB operations", "DB operations");
-            managerClass.getMyVideos(MyVideosActivity.this, "husnu", myVideos);
+            managerClass.getMyVideos(MyVideosActivity.this, username, myVideos);
             Log.d("asycn myVideos.size()", myVideos.size() + "");
             return null;
         }

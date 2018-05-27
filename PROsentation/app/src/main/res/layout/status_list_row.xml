@@ -1,0 +1,56 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:divider="@color/black"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Video Status"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:paddingBottom="5dp"/>
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_face"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Face"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_gaze"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Gaze"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_pose"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Pose"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_voice"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Voice"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>

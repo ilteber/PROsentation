@@ -23,7 +23,7 @@ import prosentation.example.com.prosentation.DynamoDB.DynamoDBManager;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-    private DynamoDBManager managerClass = new DynamoDBManager();
+    private static DynamoDBManager managerClass = DynamoDBManager.getInstance();
 
     @BindView(R.id.input_name)
     EditText _nameText;

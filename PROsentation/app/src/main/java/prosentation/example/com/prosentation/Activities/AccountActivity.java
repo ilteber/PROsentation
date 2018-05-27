@@ -17,7 +17,7 @@ import prosentation.example.com.prosentation.R;
 
 public class AccountActivity extends AppCompatActivity {
 
-    private DynamoDBManager managerClass = new DynamoDBManager();
+    private static DynamoDBManager managerClass = DynamoDBManager.getInstance();
 
     private String oldUsername;
     private String oldEmail;

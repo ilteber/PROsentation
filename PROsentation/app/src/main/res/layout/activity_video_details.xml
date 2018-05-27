@@ -1,96 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="prosentation.example.com.prosentation.Activities.VideoDetailsActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:background="?colorPrimaryDark">
-
-        <!--<android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        </android.support.design.widget.CollapsingToolbarLayout>-->
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <include
             layout="@layout/toolbar_layout"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_weight="1"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.Dark"
-            app:title="@string/app_name"/>
+            android:layout_height="wrap_content" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             app:tabMode="fixed"
             app:tabGravity="fill"
-            app:tabTextAppearance="@style/ErkanCustomTextSize"
-            app:tabTextColor="@color/graylight"
-            app:tabSelectedTextColor="@color/white">
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_overall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Overall" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_face"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Face" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_gaze"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gaze" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_gesture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gesture" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_voice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Voice" />
-
-        </android.support.design.widget.TabLayout>
+            app:tabIndicatorColor="@color/startblue"/>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 </android.support.design.widget.CoordinatorLayout>

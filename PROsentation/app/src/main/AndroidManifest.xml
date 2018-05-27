@@ -21,7 +21,9 @@
         android:theme="@style/AppTheme">
 
         <!-- This is the starting activity of the application, you can change it if you want :) -->
-        <activity android:name=".Activities.VideoTakeActivity">
+        <activity
+            android:name=".Activities.VideoTakeActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,23 +41,32 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity
+        <!--
+            <activity
             android:name=".LoginActivity"
             android:label="Login To Your Account"
             android:theme="@style/AppTheme.Dark" />
+        -->
         <activity
             android:name=".SignupActivity"
             android:label="Create New Account"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme" />
 
         <!-- Uncomment this if you are going to change your starting activity as mainactivity not videotakeactivity -->
         <!-- <activity android:name=".VideoTakeActivity"></activity> -->
 
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".Activities.LoginAnimationHelper" />
+
+        <activity android:name=".Activities.AnimatedCircleActivity" />
         <activity android:name=".Activities.MyVideosActivity" />
         <activity android:name=".Activities.VideoDetailsActivity" />
         <activity android:name=".Activities.HelpActivity" />
         <activity android:name=".Activities.AccountActivity" />
-        <activity android:name=".Activities.UserProfileActivity"></activity>
+        <activity android:name=".Activities.UserProfileActivity" />
+        <activity android:name=".Activities.PublishedVideosActivity" />
+        <activity android:name=".Activities.PendingVideosActivity"></activity>
     </application>
 
 </manifest>

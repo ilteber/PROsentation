@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="prosentation.example.com.prosentation.Activities.PendingVideosActivity">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="There are 2 pending videos"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:paddingTop="20dp"
+        android:textColor="@color/darkgray"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_main_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_face"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Face"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_gaze"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Gaze"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_pose"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Pose"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_progress_voice"
+            android:layout_centerInParent="true"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            custom:arc_bottom_text="Voice"
+            custom:arc_bottom_text_size="10sp"
+            android:layout_weight="1"/>
+    </LinearLayout>-->
+
+
+
+</LinearLayout>

@@ -5,18 +5,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import prosentation.example.com.prosentation.Activities.VideoTakeActivity;
 import prosentation.example.com.prosentation.DynamoDB.DynamoDBManager;
+import prosentation.example.com.prosentation.Entity.User;
 
 /**
  * Created by lenovo on 6.2.2018.
@@ -25,10 +32,11 @@ import prosentation.example.com.prosentation.DynamoDB.DynamoDBManager;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    private DynamoDBManager managerClass = new DynamoDBManager();
+    private static DynamoDBManager managerClass = DynamoDBManager.getInstance();
     boolean success;
     SharedPreferences prefs;
-    String username;
+    private SharedPreferences.Editor prefsEditor;
+    String password, username, email;
 
     @BindView(R.id.input_username)
     EditText _usernameText;
@@ -37,21 +45,47 @@ public class LoginActivity extends AppCompatActivity {
     Button _loginButton;
     @BindView(R.id.link_signup)
     TextView _signupLink;
+    @BindView(R.id.remember_me) CheckBox _rememberme;
+    RelativeLayout rellay1, rellay2;
+
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            rellay1.setVisibility(View.VISIBLE);
+            rellay2.setVisibility(View.VISIBLE);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        rellay1 = (RelativeLayout) findViewById(R.id.rellay1);
+        rellay2 = (RelativeLayout) findViewById(R.id.rellay2);
+
+        handler.postDelayed(runnable, 0000);
+
         ButterKnife.bind(this);
         prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
+        prefsEditor = prefs.edit();
+        if(prefs.getBoolean("remember",false)){
+            username = prefs.getString("username",null);
+            password = prefs.getString("password",null);
+            _rememberme.setChecked(true);
+            onLoginSuccess();
+        }else {
+            _rememberme.setChecked(false);
+            _loginButton.setOnClickListener(new View.OnClickListener() {
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    login();
+                }
+            });
+        }
 
         _signupLink.setOnClickListener(new View.OnClickListener() {
 
@@ -86,6 +120,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    class getMyMail extends AsyncTask<String, Void, Void> {
+        //        private ProgressDialog dialog;
+        User user;
+        public getMyMail(User user){
+            this.user = user;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            Log.d("DB operations", "DB operations");
+
+            success = managerClass.getMyEmail(LoginActivity.this, params[0], params[1], user);
+            return null;
+        }
+
+    }
+
     public void login() {
         Log.d(TAG, "Login");
 
@@ -102,8 +153,19 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
+
         username = _usernameText.getText().toString();
-        String password = _passwordText.getText().toString();
+        password = _passwordText.getText().toString();
+        boolean remember = _rememberme.isChecked();
+        if(remember){
+            prefsEditor.putBoolean("remember", true);
+            prefsEditor.putString("username", username);
+            prefsEditor.putString("password", password);
+            prefsEditor.commit();
+        }else {
+            prefsEditor.clear();
+            prefsEditor.commit();
+        }
 
         // TODO: Implement your own authentication logic here.
         new LoginToSystem().execute(username, password);
@@ -144,7 +206,19 @@ public class LoginActivity extends AppCompatActivity {
         prefs.edit().putString("username", username).commit();
         finish();
 
+
+        User user = new User();
+        try {
+            new getMyMail(user).execute(username, password).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent(this, VideoTakeActivity.class);
+        intent.putExtra("USERNAME", username);
+        intent.putExtra("PASSWORD", password);
+        intent.putExtra("EMAIL", user.getEmail());
         startActivity(intent);
     }
 

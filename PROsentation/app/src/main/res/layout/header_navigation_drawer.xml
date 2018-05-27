@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:background="@drawable/gradientbackground">
+    android:background="@color/colorPrimaryDark">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/img"
-        android:src="@drawable/icon_human"
+        android:src="@drawable/ic_account_circle_black_24dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="30dp"
         />
@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Erkan Önal"
+        android:text="Oğul Özel"
         android:layout_toRightOf="@+id/img"
         android:textSize="15dp"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="erkanonal94@gmail.com"
+        android:text="ogulozel@gmail.com"
         android:layout_toRightOf="@+id/img"
         android:textSize="13dp"
         android:textStyle="bold"

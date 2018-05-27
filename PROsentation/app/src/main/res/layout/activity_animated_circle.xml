@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="prosentation.example.com.prosentation.Activities.AnimatedCircleActivity">
+
+    <com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView
+        xmlns:app="http://schemas.android.com/apk/lib-auto"
+        android:id="@+id/circle_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_centerInParent="true"
+        app:animCircleLoadingView_mainColor="@color/main_color"
+        app:animCircleLoadingView_secondaryColor="@color/secondary_color"
+        app:animCircleLoadingView_textColor="@color/white"
+        />
+
+</android.support.constraint.ConstraintLayout>

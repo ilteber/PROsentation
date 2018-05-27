@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#F50057</color>
-    <color name="colorPrimaryDark">#931913</color>
+    <color name="colorPrimaryDark">#FFB300</color>
     <color name="colorAccent">#FF4081</color>
     <color name="darkgray">#6c6c6c</color>
 
@@ -22,12 +22,12 @@
 
     <color name="backgroundcolor">#fcfcfc</color>
     <color name="lightgray">#ededed</color>
-    <color name="deeppurple">#7c4dff</color>
+    <color name="deeppurple">#7e47d1</color>
     <color name="yello">#ffb300</color>
     <color name="green">#00bfa5</color>
     <color name="darkblue">#23283a</color>
     <color name="testolorblue">#152b38</color>
-    <color name="pink">#fe104d</color>
+    <color name="pink">#931913</color>
     <color name="blue">#00AAFF</color>
     <color name="orange">#FF8040</color>
 
@@ -37,5 +37,14 @@
     <color name="graylight">#fafafa</color>
     <color name="startblue">#09c6df</color>
     <color name="endblue">#0bcce6</color>
+    <color name="gold">#84754E</color>"
+    <color name="transparent">#00000000</color>
 
+    <!-- animated loading bar colors -->
+    <color name="background">#65828e</color>
+    <color name="main_color">#ff9a00</color>
+    <color name="secondary_color">#BDBDBD</color>
+
+    <color name="gradStop">#F4511E</color>
+    <color name="gradStart">#FFB300</color>
 </resources>

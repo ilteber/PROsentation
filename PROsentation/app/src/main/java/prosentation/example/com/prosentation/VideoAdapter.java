@@ -7,7 +7,10 @@ package prosentation.example.com.prosentation;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -86,7 +90,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
         //String mUri = "http://ec2-18-222-71-24.us-east-2.compute.amazonaws.com/erkan/unprocessed/album10.png";
         String mUri = video.getThumbnailURL();
 
-        new DownloadThumbnailTask((ImageView)holder.thumbnail).execute(mUri);
+        Bitmap thumbnailFromLocalStorage = ThumbnailUtils.createVideoThumbnail(getFilePath(video.getId() + "_unprocessed.MP4"), MediaStore.Images.Thumbnails.MINI_KIND);
+        Log.d("path: ", getFilePath(video.getId() + "_unprocessed.MP4"));
+        holder.thumbnail.setImageBitmap(thumbnailFromLocalStorage);
+
+        //If you stream, do the thumbnail set operation as shown in below
+        //new DownloadThumbnailTask((ImageView)holder.thumbnail).execute(mUri);
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +163,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
             }
             return false;
         }
+    }
+
+    private String getFilePath(String filename) {
+        File direc = mContext.getExternalFilesDir(null);
+        String absoPath = direc.getAbsolutePath();
+
+        String path = absoPath + "/" + filename;
+        return path;
     }
 
     @Override
